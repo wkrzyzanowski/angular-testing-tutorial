@@ -1,0 +1,17 @@
+<div class="tile">
+  <div class="label">
+    <label>
+      Name:
+      <input [(ngModel)]="name" class="title" type="text">
+    </label>
+  </div>
+  <div class="label">
+    <label>
+      Price:
+      <input [(ngModel)]="price" class="title" type="number" step="0.01">
+    </label>
+  </div>
+  <div class="label">
+    <button (click)="add()">Add</button>
+  </div>
+</div>

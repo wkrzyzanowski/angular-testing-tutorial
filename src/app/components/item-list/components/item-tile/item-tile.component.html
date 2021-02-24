@@ -1,0 +1,14 @@
+<div class="tile">
+  <div class="label">
+    <span class="title">ID:</span><span>{{item.id && item.id.length >= 8 ? item.id.substring(0, 8) : item.id}}</span>
+  </div>
+  <div class="label">
+    <span class="title">Name:</span><span>{{item.name}}</span>
+  </div>
+  <div class="label">
+    <span class="title">Price:</span><span>{{item.price}}</span>
+  </div>
+  <div>
+    <button (click)="deleteItem()">Delete</button>
+  </div>
+</div>

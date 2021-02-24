@@ -1,0 +1,8 @@
+<ul style="  list-style-type: none; padding: 0">
+  <li *ngFor="let item of items; let i = index">
+    <app-item-tile [id]="i" [item]="item" (deleteItemEvent)="deleteItem($event)"></app-item-tile>
+  </li>
+  <li>
+    <app-item-tile-input (itemEvent)="addItem($event)"></app-item-tile-input>
+  </li>
+</ul>
