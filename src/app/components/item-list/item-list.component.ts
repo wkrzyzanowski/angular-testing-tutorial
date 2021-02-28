@@ -43,7 +43,7 @@ export class ItemListComponent implements OnInit {
   }
 
   private fetchItems(): void {
-    this.itemService.getItems()
+    this.itemService.getAll()
       .pipe(take(1))
       .subscribe(resp => {
           this.items = resp;

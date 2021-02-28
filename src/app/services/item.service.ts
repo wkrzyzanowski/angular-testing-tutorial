@@ -9,18 +9,18 @@ import {v4 as uuid} from 'uuid';
 })
 export class ItemService {
 
-  private static readonly URL_API = '/api';
+  public static readonly URL_API = '/api';
 
   public items: ItemModel[] = [];
 
   constructor(private readonly api: HttpClient) {
   }
 
-  public getItems(): Observable<ItemModel[]> {
+  public getAll(): Observable<ItemModel[]> {
     return this.api.get<ItemModel[]>(`${ItemService.URL_API}/products`);
   }
 
-  public getItemById(id: string): Observable<ItemModel | undefined> {
+  public getById(id: string): Observable<ItemModel | undefined> {
     return this.api.get<ItemModel>(`${ItemService.URL_API}/products/${id}`);
   }
 
