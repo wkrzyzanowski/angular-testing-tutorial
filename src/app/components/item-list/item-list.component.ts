@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemModel} from '../../models/item-model';
 import {ItemService} from '../../services/item.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-list',
@@ -17,30 +18,38 @@ export class ItemListComponent implements OnInit {
     this.fetchItems();
   }
 
-  private fetchItems(): void {
-    this.itemService.getItems().subscribe(resp => {
-        this.items = resp;
-      },
-      error => {
-        console.log(error);
-      });
-  }
-
   public addItem($event: ItemModel): void {
-    this.itemService.create($event).subscribe(resp => {
-        console.log('Item added:' + resp.id);
-      },
-      error => {
-        console.error('Cannot add item: ' + error);
-      });
+    this.itemService.create($event)
+      .pipe(take(1))
+      .subscribe(resp => {
+          console.log('Item added:' + resp.id);
+          this.fetchItems();
+        },
+        error => {
+          console.error('Cannot add item: ' + error);
+        });
   }
 
   public deleteItem($event: ItemModel): void {
-    this.itemService.delete($event).subscribe(resp => {
-        console.log('Item deleted successfully');
-      },
-      error => {
-        console.error('Cannot delete item: ' + error);
-      });
+    this.itemService.delete($event)
+      .pipe(take(1))
+      .subscribe(resp => {
+          console.log('Item deleted successfully');
+          this.fetchItems();
+        },
+        error => {
+          console.error('Cannot delete item: ' + error);
+        });
+  }
+
+  private fetchItems(): void {
+    this.itemService.getItems()
+      .pipe(take(1))
+      .subscribe(resp => {
+          this.items = resp;
+        },
+        error => {
+          console.error(error);
+        });
   }
 }

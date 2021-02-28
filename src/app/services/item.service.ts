@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ItemModel} from '../models/item-model';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 import {v4 as uuid} from 'uuid';
 
 @Injectable({
@@ -9,49 +9,31 @@ import {v4 as uuid} from 'uuid';
 })
 export class ItemService {
 
+  private static readonly URL_API = '/api';
+
   public items: ItemModel[] = [];
 
-  private mockedItems: ItemModel[] = [
-    new ItemModel(uuid(), 'Suszarka', 129.99),
-    new ItemModel(uuid(), 'Odkurzacz', 239.99),
-    new ItemModel(uuid(), 'Kabel USB', 19.99),
-    new ItemModel(uuid(), 'Monitor 27\'', 1479.99),
-    new ItemModel(uuid(), 'Pralka', 919.99),
-  ];
-
-  constructor() {
+  constructor(private readonly api: HttpClient) {
   }
 
   public getItems(): Observable<ItemModel[]> {
-    return of(this.mockedItems);
+    return this.api.get<ItemModel[]>(`${ItemService.URL_API}/products`);
   }
 
   public getItemById(id: string): Observable<ItemModel | undefined> {
-    const response = this.mockedItems.find(item => item.id === id);
-    if (!response) {
-      throw new Error('Not found item with id: ' + id);
-    }
-    return of(response);
+    return this.api.get<ItemModel>(`${ItemService.URL_API}/products/${id}`);
   }
 
   public create(newItem: ItemModel): Observable<ItemModel> {
-    const response = this.mockedItems.find(item => item.id === newItem.id);
-    if (response) {
-      throw new Error('Item with id: ' + newItem.id + ' already exists!');
-    }
-    newItem.id = uuid();
-    this.mockedItems.push(newItem);
-    return of(newItem);
+    return this.api.post<ItemModel>(`${ItemService.URL_API}/products`, {
+      id: uuid(),
+      name: newItem.name,
+      price: newItem.price
+    });
   }
 
   public delete(deleteItem: ItemModel): Observable<boolean> {
-    const response = this.mockedItems.findIndex(item => item.id === deleteItem.id);
-    if ((!response && response !== 0) || response === -1) {
-      throw new Error('Not found item with id: ' + deleteItem.id);
-    } else {
-      this.mockedItems.splice(response, 1);
-    }
-    return of(true);
+    return this.api.delete<boolean>(`${ItemService.URL_API}/products/${deleteItem.id}`);
   }
 
 

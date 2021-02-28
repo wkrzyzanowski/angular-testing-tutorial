@@ -8,6 +8,7 @@ import {ItemTileComponent} from './components/item-list/components/item-tile/ite
 import {ItemService} from './services/item.service';
 import {ItemTileInputComponent} from './components/item-list/components/item-tile-input/item-tile-input.component';
 import {FormsModule} from '@angular/forms';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,9 +21,11 @@ import {FormsModule} from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule
   ],
   providers: [
     ItemService,
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })
